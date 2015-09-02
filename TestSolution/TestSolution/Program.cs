@@ -10,7 +10,9 @@ namespace TestSolution
     {
         static void Main(string[] args)
         {
+            Console.Title("Welcome");
             Console.Write("Hello World");
+           
         }
     }
 }
