@@ -12,7 +12,12 @@ namespace TestSolution
         {
             Console.Title("Welcome");
             Console.Write("Hello World");
-           
+
+            for (int i = 1; i <= 3; i++)
+            {
+                Console.WriteLine(i);
+            }
+
         }
     }
 }
