@@ -19,12 +19,21 @@ namespace FormulaEvaluator
 
         public static int Evaluate(String exp, Lookup variableEvaluator)
         {
-            Stack<Char> operators = new Stack<char>();
-            Stack<int> operands = new Stack<int>();
+            Stack<char> operators = new Stack<char>();
+            Stack<int> Value = new Stack<int>();
 
-            string[] substring = Regex.Split(exp, "(\\()|(\\))|(-)|(\\+)|(\\*)|(/)");
-            for (int index = 0; index < substring.Length; index++)
+            string[] token = Regex.Split(exp, "(\\()|(\\))|(-)|(\\+)|(\\*)|(/)");
+            for (int index = 0; index < token.Length; index++)
             {
+                Boolean isDigit = Regex.IsMatch(token[index], @"\d");
+                //if (isDigit && (operators(char).Peek.equals("*") || ))
+                //{
+                //  Value<int>.Push(token[index]);
+                //}
+                //else
+                //{
+                //  operators<Char>.Push(substring[index]);
+                //}
 
             }
             return 0;
