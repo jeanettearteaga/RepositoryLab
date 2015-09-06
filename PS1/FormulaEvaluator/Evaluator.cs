@@ -39,7 +39,7 @@ namespace FormulaEvaluator
                 {
                     int currentToken = Int32.Parse(token[index]);
 
-                    if(operators.Count() == 0 || operators.Peek() != '*' || operators.Peek() != ('/'))
+                    if (operators.Count() == 0 || operators.Peek() != '*' || operators.Peek() != ('/'))
                     {
                         Value.Push(currentToken);
                         continue;
@@ -118,15 +118,18 @@ namespace FormulaEvaluator
                     else
                         throw new Exception("Parenthesis missing");
 
-                    switch (operators.Peek())
+                    if (operators.Count() != 0)
                     {
-                        case '*':
-                            Value.Push(multiply(Value, operators));
-                            break;
+                        switch (operators.Peek())
+                        {
+                            case '*':
+                                Value.Push(multiply(Value, operators));
+                                break;
 
-                        case '/':
-                            Value.Push(divide(Value, operators));
-                            break;
+                            case '/':
+                                Value.Push(divide(Value, operators));
+                                break;
+                        }
                     }
                 }
             }
@@ -134,7 +137,7 @@ namespace FormulaEvaluator
             // When operator stack is empty and Value stack contains only one integer.
             if (operators.Count() == 0)
             {
-                if(Value.Count() == 1)
+                if (Value.Count() == 1)
                 {
                     answer = Value.Pop();
                 }
@@ -146,11 +149,11 @@ namespace FormulaEvaluator
             // When operator stack has more then one item     
             else
             {
-                if(operators.Count() == 1)
+                if (operators.Count() == 1)
                 {
-                    if((operators.Peek() == '+') || (operators.Peek() == '-'))
+                    if ((operators.Peek() == '+') || (operators.Peek() == '-'))
                     {
-                        if(Value.Count() == 2)
+                        if (Value.Count() == 2)
                         {
                             switch (operators.Peek())
                             {
@@ -181,7 +184,7 @@ namespace FormulaEvaluator
             return answer;
         }
 
-        public static int add (Stack<int> Value, Stack<char> operators)
+        public static int add(Stack<int> Value, Stack<char> operators)
         {
             int val1 = Value.Pop();
             int val2 = Value.Pop();
@@ -189,7 +192,7 @@ namespace FormulaEvaluator
             return val1 + val2;
         }
 
-        public static int subtract (Stack<int> Value, Stack<char> operators)
+        public static int subtract(Stack<int> Value, Stack<char> operators)
         {
             int val1 = Value.Pop();
             int val2 = Value.Pop();
@@ -197,7 +200,7 @@ namespace FormulaEvaluator
             return val1 - val2;
         }
 
-        public static int multiply (Stack<int> Value, Stack<char> operators)
+        public static int multiply(Stack<int> Value, Stack<char> operators)
         {
             int val1 = Value.Pop();
             int val2 = Value.Pop();
@@ -205,7 +208,7 @@ namespace FormulaEvaluator
             return val1 * val2;
         }
 
-        public static int divide (Stack<int> Value, Stack<char> operators)
+        public static int divide(Stack<int> Value, Stack<char> operators)
         {
             int val1 = Value.Pop();
             int val2 = Value.Pop();
