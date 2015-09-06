@@ -14,7 +14,9 @@ namespace TestFormulaEvaluator
             //Evaluator evaluator = new Evaluator();
             //evaluator.Evaluate();
 
-            Evaluator.Evaluate("2+2", null);
+            
+            Console.WriteLine(Evaluator.Evaluate("2-2", null));
+            Console.Read();
         }
     }
 }

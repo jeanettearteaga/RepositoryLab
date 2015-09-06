@@ -23,14 +23,14 @@ namespace FormulaEvaluator
 
             for (int index = 0; index < token.Length; index++)
             {
+                Boolean isPlus = Regex.IsMatch(token[index], @"\+");
                 Boolean isDigit = Regex.IsMatch(token[index], @"\d");
                 Boolean isVariable;
-                Boolean isPlus = Regex.IsMatch(token[index], "+");
-                Boolean isMinus = Regex.IsMatch(token[index], "-");
-                Boolean isMultiplication = Regex.IsMatch(token[index], "*");
-                Boolean isDivide = Regex.IsMatch(token[index], "/");
-                Boolean isLeftParenth = Regex.IsMatch(token[index], "(");
-                Boolean isRightParenth = Regex.IsMatch(token[index], ")");
+                Boolean isMinus = Regex.IsMatch(token[index], @"\-");
+                Boolean isMultiplication = Regex.IsMatch(token[index], @"\*");
+                Boolean isDivide = Regex.IsMatch(token[index], @"\/");
+                Boolean isLeftParenth = Regex.IsMatch(token[index], @"\(");
+                Boolean isRightParenth = Regex.IsMatch(token[index], @"\)");
 
                 // Checks if the curretn token is an integer then prosecutes in 
                 // a certain way depending on what is at the highest position
@@ -39,9 +39,10 @@ namespace FormulaEvaluator
                 {
                     int currentToken = Int32.Parse(token[index]);
 
-                    if(!operators.Peek().Equals('*') || !operators.Peek().Equals('/'))
+                    if(operators.Count() == 0 || operators.Peek() != '*' || operators.Peek() != ('/'))
                     {
                         Value.Push(currentToken);
+                        continue;
                     }
 
                     switch (operators.Peek())
@@ -65,27 +66,22 @@ namespace FormulaEvaluator
                 if (isPlus || isMinus)
                 {
                     char currentToken = Convert.ToChar(token[index]);
-
-                    switch (operators.Peek())
+                    if (operators.Count() >= 2)
                     {
-                        case '+':
-                            int val1 = Value.Pop();
-                            int val2 = Value.Pop();
-                            operators.Pop();
-                            int newVal = val1 + val2;
-                            Value.Push(newVal);
-                            operators.Push(currentToken);
-                            break;
+                        switch (operators.Peek())
+                        {
+                            case '+':
+                                Value.Push(add(Value, operators));
+                                operators.Push(currentToken);
+                                break;
 
-                        case '-':
-                            val1 = Value.Pop();
-                            val2 = Value.Pop();
-                            operators.Pop();
-                            newVal = val1 + val2;
-                            Value.Push(newVal);
-                            operators.Push(currentToken);
-                            break;
+                            case '-':
+                                Value.Push(subtract(Value, operators));
+                                operators.Push(currentToken);
+                                break;
+                        }
                     }
+                    operators.Push(currentToken);
                 }
 
                 else if (isMultiplication || isDivide)
@@ -107,45 +103,29 @@ namespace FormulaEvaluator
                     switch (operators.Peek())
                     {
                         case '+':
-                            int val1 = Value.Pop();
-                            int val2 = Value.Pop();
-                            operators.Pop();
-                            int newVal = val1 + val2;
-                            Value.Push(newVal);
+                            Value.Push(add(Value, operators));
                             break;
 
                         case '-':
-                            val1 = Value.Pop();
-                            val2 = Value.Pop();
-                            operators.Pop();
-                            newVal = val1 - val2;
-                            Value.Push(newVal);
+                            Value.Push(subtract(Value, operators));
                             break;
                     }
 
-                    //if (operators.Peek().Equals('('))
-                    //{
-                    //    operators.Pop();
-                    //}
-                    //else
-                    //    thorw error
+                    if (operators.Peek().Equals('('))
+                    {
+                        operators.Pop();
+                    }
+                    else
+                        throw new Exception("Parenthesis missing");
 
                     switch (operators.Peek())
                     {
                         case '*':
-                            int val1 = Value.Pop();
-                            int val2 = Value.Pop();
-                            operators.Pop();
-                            int newVal = val1 * val2;
-                            Value.Push(newVal);
+                            Value.Push(multiply(Value, operators));
                             break;
 
                         case '/':
-                            val1 = Value.Pop();
-                            val2 = Value.Pop();
-                            operators.Pop();
-                            newVal = val1 / val2;
-                            Value.Push(newVal);
+                            Value.Push(divide(Value, operators));
                             break;
                     }
                 }
@@ -168,23 +148,17 @@ namespace FormulaEvaluator
             {
                 if(operators.Count() == 1)
                 {
-                    if((operators.Peek().Equals('+')) || (operators.Peek().Equals('-')))
+                    if((operators.Peek() == '+') || (operators.Peek() == '-'))
                     {
                         if(Value.Count() == 2)
                         {
                             switch (operators.Peek())
                             {
                                 case '+':
-                                    int val1 = Value.Pop();
-                                    int val2 = Value.Pop();
-                                    operators.Pop();
-                                    answer = val1 + val2;
+                                    answer = add(Value, operators);
                                     break;
                                 case '-':
-                                    val1 = Value.Pop();
-                                    val2 = Value.Pop();
-                                    operators.Pop();
-                                    answer = val1 - val2;
+                                    answer = subtract(Value, operators);
                                     break;
                             }
                         }
@@ -205,6 +179,38 @@ namespace FormulaEvaluator
             }
 
             return answer;
+        }
+
+        public static int add (Stack<int> Value, Stack<char> operators)
+        {
+            int val1 = Value.Pop();
+            int val2 = Value.Pop();
+            operators.Pop();
+            return val1 + val2;
+        }
+
+        public static int subtract (Stack<int> Value, Stack<char> operators)
+        {
+            int val1 = Value.Pop();
+            int val2 = Value.Pop();
+            operators.Pop();
+            return val1 - val2;
+        }
+
+        public static int multiply (Stack<int> Value, Stack<char> operators)
+        {
+            int val1 = Value.Pop();
+            int val2 = Value.Pop();
+            operators.Pop();
+            return val1 * val2;
+        }
+
+        public static int divide (Stack<int> Value, Stack<char> operators)
+        {
+            int val1 = Value.Pop();
+            int val2 = Value.Pop();
+            operators.Pop();
+            return val1 / val2;
         }
     }
 }
