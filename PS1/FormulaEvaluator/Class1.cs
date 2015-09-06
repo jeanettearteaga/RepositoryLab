@@ -19,6 +19,8 @@ namespace FormulaEvaluator
 
         public static int Evaluate(String exp, Lookup variableEvaluator)
         {
+            int answer = 0; // Still have to assign the correct value at the end of the for loop.
+
             Stack<char> operators = new Stack<char>();
             Stack<int> Value = new Stack<int>();
 
@@ -153,7 +155,7 @@ namespace FormulaEvaluator
                     }
                 }
             }
-            return 0;
+            return answer;
         }
     }
 }
