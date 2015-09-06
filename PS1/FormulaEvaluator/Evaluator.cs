@@ -7,11 +7,6 @@ using System.Threading.Tasks;
 
 namespace FormulaEvaluator
 {
-    public class Class1
-    {
-    }
-
-
     public static class Evaluator
     {
 
@@ -155,6 +150,60 @@ namespace FormulaEvaluator
                     }
                 }
             }
+
+            // When operator stack is empty and Value stack contains only one integer.
+            if (operators.Count() == 0)
+            {
+                if(Value.Count() == 1)
+                {
+                    answer = Value.Pop();
+                }
+                else
+                {
+                    throw new Exception("Invalid input");
+                }
+            }
+            // When operator stack has more then one item     
+            else
+            {
+                if(operators.Count() == 1)
+                {
+                    if((operators.Peek().Equals('+')) || (operators.Peek().Equals('-')))
+                    {
+                        if(Value.Count() == 2)
+                        {
+                            switch (operators.Peek())
+                            {
+                                case '+':
+                                    int val1 = Value.Pop();
+                                    int val2 = Value.Pop();
+                                    operators.Pop();
+                                    answer = val1 + val2;
+                                    break;
+                                case '-':
+                                    val1 = Value.Pop();
+                                    val2 = Value.Pop();
+                                    operators.Pop();
+                                    answer = val1 - val2;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Invalid input");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid input");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Invalid input");
+                }
+            }
+
             return answer;
         }
     }
