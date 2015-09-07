@@ -38,8 +38,8 @@ namespace FormulaEvaluator
                 if (isDigit)
                 {
                     int currentToken = Int32.Parse(token[index]);
-
-                    if (operators.Count() == 0 || operators.Peek() != '*' || operators.Peek() != ('/'))
+                    
+                    if ((operators.Count() == 0) || ((operators.Peek() != '*') && (operators.Peek() != '/')))
                     {
                         Value.Push(currentToken);
                         continue;
@@ -50,15 +50,13 @@ namespace FormulaEvaluator
                         case '*':
                             int currentVal = Value.Pop();
                             operators.Pop();
-                            int newVal = (currentVal * currentToken);
-                            Value.Push(newVal);
+                            Value.Push(multiplyByToken(currentVal, currentToken));
                             break;
 
                         case '/':
                             currentVal = Value.Pop();
                             operators.Pop();
-                            newVal = (currentVal / currentToken);
-                            Value.Push(newVal);
+                            Value.Push(divideByToken(currentVal, currentToken));
                             break;
                     }
                 }
@@ -197,7 +195,7 @@ namespace FormulaEvaluator
             int val1 = Value.Pop();
             int val2 = Value.Pop();
             operators.Pop();
-            return val1 - val2;
+            return val2 - val1;
         }
 
         public static int multiply(Stack<int> Value, Stack<char> operators)
@@ -212,8 +210,26 @@ namespace FormulaEvaluator
         {
             int val1 = Value.Pop();
             int val2 = Value.Pop();
+            if(val2 == 0)
+            {
+                throw new Exception("Can not divide by zero");
+            }
             operators.Pop();
             return val1 / val2;
+        }
+
+        public static int divideByToken(int numerator, int denominator)
+        {
+            if(denominator == 0)
+            {
+                throw new Exception("Can not divide by zero");
+            }
+             return (numerator / denominator);
+        }
+
+        public static int multiplyByToken(int num1, int num2)
+        {
+            return num1 * num2;
         }
     }
 }
