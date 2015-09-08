@@ -36,6 +36,10 @@ namespace TestFormulaEvaluator
                 Console.WriteLine(e.Message.ToString());
             }
 
+            //Console.WriteLine(Evaluator.Evaluate("2+7+1", null));
+
+            //Console.WriteLine(Evaluator.Evaluate("2+1*3-1", null));
+
             Console.Read();
         }
     }
