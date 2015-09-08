@@ -210,12 +210,12 @@ namespace FormulaEvaluator
         {
             int val1 = Value.Pop();
             int val2 = Value.Pop();
-            if(val2 == 0)
+            if(val1 == 0)
             {
                 throw new Exception("Can not divide by zero");
             }
             operators.Pop();
-            return val1 / val2;
+            return val2 / val1;
         }
 
         public static int divideByToken(int numerator, int denominator)
