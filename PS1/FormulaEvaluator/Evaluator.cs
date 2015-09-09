@@ -7,14 +7,32 @@ using System.Threading.Tasks;
 
 namespace FormulaEvaluator
 {
+    /// <summary>
+    /// A Class that Calculates a mathematical format string mathematically including letters.
+    /// </summary>
     public static class Evaluator
     {
-
+        /// <summary>
+        /// Delegate that takes in as input the Letter or letters that was in the string input of Evaluate 
+        /// and "Looks up the value of that letter. It will return that value"
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
         public delegate int Lookup(String v);
 
+        /// <summary>
+        /// Function that takes in a string which is the Mathematical expression and a 
+        /// Delegate for when we have an unknown variable like A, B7 etc.
+        /// It returns the value of the solved mathematical expression from the input string.
+        /// </summary>
+        /// <param name="exp"></param>
+        /// <param name="variableEvaluator"></param>
+        /// <returns></returns>
         public static int Evaluate(String exp, Lookup variableEvaluator)
         {
-            int answer = 0; // Still have to assign the correct value at the end of the for loop.
+            int answer = 0;
+
+            //FormulaEvaluator.Evaluator.Lookup;
 
             Stack<char> operators = new Stack<char>();
             Stack<int> Value = new Stack<int>();
@@ -25,12 +43,12 @@ namespace FormulaEvaluator
             {
                 Boolean isPlus = Regex.IsMatch(token[index], @"\+");
                 Boolean isDigit = Regex.IsMatch(token[index], @"\d");
-                Boolean isVariable;
                 Boolean isMinus = Regex.IsMatch(token[index], @"\-");
                 Boolean isMultiplication = Regex.IsMatch(token[index], @"\*");
                 Boolean isDivide = Regex.IsMatch(token[index], @"\/");
                 Boolean isLeftParenth = Regex.IsMatch(token[index], @"\(");
                 Boolean isRightParenth = Regex.IsMatch(token[index], @"\)");
+                Boolean isVariable;
 
                 // Checks if the curretn token is an integer then prosecutes in 
                 // a certain way depending on what is at the highest position
@@ -182,6 +200,17 @@ namespace FormulaEvaluator
             return answer;
         }
 
+        /// <summary>
+        /// Takes in a stack of ints and a stack of chars
+        /// 
+        /// Function that adds the two popped values of a stack of ints and pops the add 
+        /// sign from a stack of chars.
+        /// 
+        /// Returns the added popped integers from the int stack.
+        /// </summary>
+        /// <param name="Value"></param>
+        /// <param name="operators"></param>
+        /// <returns></returns>
         public static int add(Stack<int> Value, Stack<char> operators)
         {
             int val1 = Value.Pop();
@@ -190,6 +219,17 @@ namespace FormulaEvaluator
             return val1 + val2;
         }
 
+        /// <summary>
+        /// Takes in a stack of ints and a tack of chars.
+        /// 
+        /// Function that subtracts the two popped values of a stack of ints and 
+        /// pops the minus symbol from the stack of chars.
+        /// 
+        /// Returns the second popped int minus the first popped int.
+        /// </summary>
+        /// <param name="Value"></param>
+        /// <param name="operators"></param>
+        /// <returns></returns>
         public static int subtract(Stack<int> Value, Stack<char> operators)
         {
             int val1 = Value.Pop();
@@ -198,6 +238,17 @@ namespace FormulaEvaluator
             return val2 - val1;
         }
 
+        /// <summary>
+        /// Takes in a stack of ints and a stack of chars.
+        /// 
+        /// Function that pops and multiplies the top two ints of the integer stack and 
+        /// then pops the char stack to get rid of the multiply symbol.
+        /// 
+        /// Returns the multiplied result. 
+        /// </summary>
+        /// <param name="Value"></param>
+        /// <param name="operators"></param>
+        /// <returns></returns>
         public static int multiply(Stack<int> Value, Stack<char> operators)
         {
             int val1 = Value.Pop();
@@ -206,6 +257,19 @@ namespace FormulaEvaluator
             return val1 * val2;
         }
 
+
+        /// <summary>
+        /// Takes in a satck of ints and a stack of chars.
+        /// 
+        /// Function that pops the two top values of the Value stack and then 
+        /// divides the second popped int with the first popped int. And then pops the 
+        /// cahr stack to get rid of the divide sign when called in Evaluator Method.
+        /// 
+        /// Returns the divided result.
+        /// </summary>
+        /// <param name="Value"></param>
+        /// <param name="operators"></param>
+        /// <returns></returns>
         public static int divide(Stack<int> Value, Stack<char> operators)
         {
             int val1 = Value.Pop();
@@ -218,6 +282,14 @@ namespace FormulaEvaluator
             return val2 / val1;
         }
 
+        /// <summary>
+        /// Takes in two integers 
+        /// 
+        /// Divides the int called numerator by the int called denominator and returns it.
+        /// </summary>
+        /// <param name="numerator"></param>
+        /// <param name="denominator"></param>
+        /// <returns></returns>
         public static int divideByToken(int numerator, int denominator)
         {
             if(denominator == 0)
@@ -227,9 +299,19 @@ namespace FormulaEvaluator
              return (numerator / denominator);
         }
 
+        /// <summary>
+        /// Takes in two integers 
+        /// 
+        /// Multiplies the two integers and returns them.
+        /// </summary>
+        /// <param name="num1"></param>
+        /// <param name="num2"></param>
+        /// <returns></returns>
         public static int multiplyByToken(int num1, int num2)
         {
             return num1 * num2;
         }
+
+        public static System.Runtime.Serialization.SerializationInfo A2 { get; set; }
     }
 }
